@@ -2,140 +2,206 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>企业资质知识库</title>
-  <link rel="stylesheet" href="/css/style.css?v=3">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #1e293b;
+      --text2: #64748b;
+      --text3: #94a3b8;
+      --border: #e2e8f0;
+      --success: #16a34a; --success-bg: #dcfce7;
+      --warning: #d97706; --warning-bg: #fef3c7;
+      --danger: #dc2626;  --danger-bg: #fee2e2;
+      --radius: 12px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ====== 顶部搜索栏 ====== */
+    .top-bar {
+      position: sticky; top: 0; z-index: 10;
+      background: var(--card);
+      padding: 12px 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    .top-title {
+      font-size: 18px; font-weight: 700;
+      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .search-box {
+      display: flex; align-items: center;
+      background: var(--bg);
+      border-radius: 10px; padding: 0 12px;
+    }
+    .search-box input {
+      flex: 1; border: none; background: transparent;
+      padding: 10px 0; font-size: 15px; outline: none;
+    }
+    .search-icon { font-size: 16px; opacity: .5; }
+
+    /* ====== 分类标签横向滚动 ====== */
+    .cat-scroll {
+      position: sticky; top: 108px; z-index: 9;
+      background: var(--bg);
+      padding: 10px 16px;
+      overflow-x: auto; white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .cat-scroll::-webkit-scrollbar { display: none; }
+    .cat-tab {
+      display: inline-block;
+      padding: 7px 14px; margin-right: 8px;
+      border-radius: 20px;
+      font-size: 13px; font-weight: 500;
+      background: var(--card);
+      color: var(--text2);
+      cursor: pointer; user-select: none;
+      transition: all .2s;
+    }
+    .cat-tab.active {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* ====== 排序与计数 ====== */
+    .sort-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 6px 16px 2px;
+      font-size: 13px; color: var(--text2);
+    }
+    .sort-btns { display: flex; gap: 8px; }
+    .sort-btn {
+      border: none; background: none;
+      padding: 4px 10px; border-radius: 6px;
+      font-size: 12px; color: var(--text3); cursor: pointer;
+    }
+    .sort-btn.active {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* ====== 文档列表 ====== */
+    .doc-list { padding: 8px 16px 60px; }
+    .doc-card {
+      background: var(--card); border-radius: var(--radius);
+      margin-bottom: 10px; padding: 14px;
+      box-shadow: 0 1px 2px rgba(0,0,0,.04);
+      cursor: pointer; user-select: none;
+      transition: box-shadow .2s;
+    }
+    .doc-card:active { box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+    .doc-header {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .doc-icon { font-size: 28px; flex-shrink: 0; }
+    .doc-info { flex: 1; min-width: 0; }
+    .doc-title {
+      font-size: 15px; font-weight: 600;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .doc-meta { margin-top: 4px; display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag {
+      display: inline-block; padding: 2px 8px;
+      background: var(--primary); color: #fff;
+      border-radius: 4px; font-size: 11px;
+    }
+    .tag-gray { background: #e2e8f0; color: #475569; }
+    .status-badge {
+      flex-shrink: 0; padding: 4px 10px; border-radius: 12px;
+      font-size: 11px; font-weight: 600;
+    }
+    .s-valid { background: var(--success-bg); color: var(--success); }
+    .s-expiring { background: var(--warning-bg); color: var(--warning); }
+    .s-expired { background: var(--danger-bg); color: var(--danger); }
+    .s-permanent { background: #e0e7ff; color: #4338ca; }
+    .expand-icon {
+      font-size: 16px; color: var(--text3);
+      transition: transform .2s; flex-shrink: 0;
+    }
+    .expand-icon.open { color: var(--primary); }
+
+    /* ====== 详情展开区 ====== */
+    .doc-detail {
+      margin-top: 12px; padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .d-item { padding: 4px 0; }
+    .d-label { font-size: 12px; color: var(--text3); display: block; }
+    .d-value { font-size: 14px; margin-top: 2px; }
+    .d-desc {
+      margin-top: 10px; padding: 10px; background: var(--bg);
+      border-radius: 8px; font-size: 13px; color: var(--text2);
+      line-height: 1.7;
+    }
+    .btn-file {
+      display: flex; align-items: center; gap: 6px;
+      margin-top: 10px; padding: 10px 14px;
+      background: var(--primary); color: #fff;
+      border-radius: 8px; text-decoration: none;
+      font-size: 13px; font-weight: 600;
+    }
+    .d-tags { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+    .t-tag {
+      padding: 3px 8px; background: #f1f5f9;
+      border-radius: 4px; font-size: 11px; color: var(--text2);
+    }
+
+    /* ====== 空状态 ====== */
+    .empty {
+      text-align: center; padding: 60px 20px;
+      color: var(--text3); font-size: 16px;
+    }
+
+    /* ====== 底部信息 ====== */
+    .footer {
+      text-align: center; padding: 20px 16px 30px;
+      font-size: 12px; color: var(--text3);
+    }
+  </style>
 </head>
 <body>
-  <div id="app">
-    <!-- 移动端遮罩 -->
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-    <!-- 侧边栏 -->
-    <aside class="sidebar">
-      <div class="sidebar-logo">
-        <span class="logo-icon">📋</span>
-        <span class="logo-text">资质知识库</span>
-      </div>
-      <nav class="sidebar-nav">
-        <a href="#" class="nav-item active" data-view="dashboard" onclick="event.preventDefault();navigateTo('dashboard')">
-          <span class="nav-icon">📊</span> 仪表盘
-        </a>
-        <a href="#" class="nav-item" data-view="documents" onclick="event.preventDefault();navigateTo('documents')">
-          <span class="nav-icon">📁</span> 资质文档
-        </a>
-        <a href="#" class="nav-item" data-view="upload" id="navUpload" onclick="event.preventDefault();navigateTo('upload')">
-          <span class="nav-icon">⬆️</span> 上传文档
-        </a>
-        <a href="#" class="nav-item" data-view="import" id="navImport" onclick="event.preventDefault();navigateTo('import')">
-          <span class="nav-icon">📥</span> Excel导入
-        </a>
-      </nav>
-      <div class="sidebar-section">
-        <div class="sidebar-label">快速筛选</div>
-        <a href="#" class="nav-item filter-link" data-category="营业执照" onclick="event.preventDefault();navigateTo('documents',{category:'营业执照'})">
-          <span class="nav-icon">🏢</span> 营业执照
-        </a>
-        <a href="#" class="nav-item filter-link" data-category="许可证" onclick="event.preventDefault();navigateTo('documents',{category:'许可证'})">
-          <span class="nav-icon">📜</span> 许可证
-        </a>
-        <a href="#" class="nav-item filter-link" data-category="供应商合同" onclick="event.preventDefault();navigateTo('documents',{category:'供应商合同'})">
-          <span class="nav-icon">🤝</span> 供应商合同
-        </a>
-        <a href="#" class="nav-item filter-link" data-category="发明专利" onclick="event.preventDefault();navigateTo('documents',{category:'发明专利'})">
-          <span class="nav-icon">💡</span> 发明专利
-        </a>
-        <a href="#" class="nav-item filter-link" data-category="荣誉证书" onclick="event.preventDefault();navigateTo('documents',{category:'荣誉证书'})">
-          <span class="nav-icon">🏆</span> 荣誉证书
-        </a>
-        <a href="#" class="nav-item filter-link" data-category="保险保单" onclick="event.preventDefault();navigateTo('documents',{category:'保险保单'})">
-          <span class="nav-icon">🛡️</span> 保险保单
-        </a>
-        <a href="#" class="nav-item filter-link" data-category="其他" onclick="event.preventDefault();navigateTo('documents',{category:'其他'})">
-          <span class="nav-icon">📦</span> 其他
-        </a>
-      </div>
-      <div class="sidebar-footer">
-        <button class="btn btn-primary" onclick="buildMobileLink()" style="width:100%;margin-bottom:8px;font-size:13px;">📱 生成手机查看链接</button>
-        <div class="version-info">v1.0.0</div>
-      </div>
-    </aside>
-
-    <!-- 主内容区 -->
-    <main class="main-content">
-      <!-- 顶部栏 -->
-      <header class="topbar">
-        <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">
-          <span></span><span></span><span></span>
-        </button>
-        <div class="topbar-search">
-          <span class="search-icon">🔍</span>
-          <input type="text" id="globalSearch" placeholder="搜索文档名称、编号、供应商...">
-        </div>
-        <div class="topbar-actions">
-          <button class="btn btn-primary" onclick="navigateTo('upload')" id="btnUpload">+ 上传</button>
-        </div>
-      </header>
-
-      <!-- 视图容器 -->
-      <div id="view-container">
-        <!-- 动态渲染 -->
-      </div>
-    </main>
-  </div>
-
-  <!-- 文档详情弹窗 -->
-  <div class="modal-overlay" id="detailModal">
-    <div class="modal modal-large">
-      <div class="modal-header">
-        <h2 id="detailTitle">文档详情</h2>
-        <button class="modal-close" onclick="closeModal('detailModal')">&times;</button>
-      </div>
-      <div class="modal-body" id="detailBody"></div>
+  <!-- 顶部 -->
+  <div class="top-bar">
+    <div class="top-title">📋 企业资质知识库</div>
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="搜索名称、编号、分公司、供应商...">
     </div>
   </div>
 
-  <!-- 编辑弹窗 -->
-  <div class="modal-overlay" id="editModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h2>编辑文档</h2>
-        <button class="modal-close" onclick="closeModal('editModal')">&times;</button>
-      </div>
-      <div class="modal-body" id="editBody"></div>
+  <!-- 分类标签 -->
+  <div class="cat-scroll" id="categoryTabs"></div>
+
+  <!-- 排序栏 -->
+  <div class="sort-bar">
+    <span id="resultCount">共 0 条</span>
+    <div class="sort-btns">
+      <button class="sort-btn active" id="sort-updatedAt" onclick="switchSort('updatedAt')">最近更新</button>
+      <button class="sort-btn" id="sort-title" onclick="switchSort('title')">按名称</button>
     </div>
   </div>
 
-  <!-- Toast 提示 -->
-  <div class="toast-container" id="toastContainer"></div>
+  <!-- 文档列表 -->
+  <div class="doc-list" id="docList"></div>
 
-  <script src="/js/app.js?v=3"></script>
-<script>
-if (typeof window.STATIC_DATA !== 'undefined') {
-  // 检测是否在CloudStudio公网部署
-  var host = window.location.hostname;
-  window.IS_CLOUD_STUDIO = host.indexOf('codebuddy.work') !== -1 || host.indexOf('cloudstudio') !== -1;
-  window.LAN_SERVER = 'http://192.168.21.122:3000';
-  
-  document.addEventListener('DOMContentLoaded', function() {
-    var navUpload = document.getElementById('navUpload');
-    var navImport = document.getElementById('navImport');
-    var btnUpload = document.getElementById('btnUpload');
-    if (navUpload) navUpload.style.display = 'none';
-    if (navImport) navImport.style.display = 'none';
-    if (btnUpload) btnUpload.style.display = 'none';
-    
-    if (window.IS_CLOUD_STUDIO) {
-      // 侧边栏底部添加WiFi下载说明
-      setTimeout(function() {
-        var banner = document.createElement('div');
-        banner.style.cssText = 'background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 14px;margin-top:16px;font-size:13px;color:#1e40af;text-align:center;';
-        banner.innerHTML = '📥 <b>下载文件需连接同一WiFi</b><br><small>' + window.LAN_SERVER + '/m</small>';
-        var sidebar = document.querySelector('.sidebar-bottom') || document.querySelector('.sidebar');
-        if (sidebar) sidebar.appendChild(banner);
-      }, 800);
-    }
-  });
-}
-</script>
+  <!-- 底部 -->
+  <div class="footer">数据来源：企业资质知识库 · 静态只读版本</div>
+
+  <!-- 数据加载 -->
+  <script src="data.js"></script>
+  <script src="js/mobile.js"></script>
 </body>
 </html>
