@@ -1312,7 +1312,7 @@ window.STATIC_DATA = {
       "fileType": ".pdf",
       "fileSize": 6729889,
       "createdAt": "2026-07-09T05:36:29.000Z",
-      "updatedAt": "2026-07-16T09:32:47.776Z"
+      "updatedAt": "2026-07-16T09:48:36.963Z"
     },
     {
       "id": 88,
