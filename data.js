@@ -1298,7 +1298,7 @@ window.STATIC_DATA = {
     },
     {
       "id": 87,
-      "title": "0721-0804上海至漠河",
+      "title": "��0721-0804�������Ϻ���·�������Σ����ţ����޹�˾",
       "category": "供应商合同",
       "subsidiary": "遇见美好",
       "supplier": "上海铁路国际旅游（集团）有限公司",
@@ -1312,7 +1312,7 @@ window.STATIC_DATA = {
       "fileType": ".pdf",
       "fileSize": 6729889,
       "createdAt": "2026-07-09T05:36:29.000Z",
-      "updatedAt": "2026-07-15T08:41:11.287Z"
+      "updatedAt": "2026-07-16T09:32:47.776Z"
     },
     {
       "id": 88,
