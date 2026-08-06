@@ -1583,7 +1583,25 @@ window.STATIC_DATA = {
       "fileSize": 6734102,
       "createdAt": "2026-08-06T03:59:17.761Z",
       "updatedAt": "2026-08-06T03:59:17.761Z"
+    },
+    {
+      "id": 103,
+      "title": "（9.5-9.21）武昌至新疆",
+      "category": "供应商合同",
+      "subsidiary": "遇见美好文旅科技集团有限公司",
+      "supplier": "武汉铁路国际旅行社有限公司",
+      "documentNumber": "",
+      "issueDate": "2026-09-02",
+      "expiryDate": "2026-09-21",
+      "description": "",
+      "tags": "",
+      "fileName": "9.5-9.21ï¼æ­¦æè³æ°çï¼.pdf",
+      "filePath": "1785988867600-175165641.pdf",
+      "fileType": ".pdf",
+      "fileSize": 7287957,
+      "createdAt": "2026-08-06T04:01:07.629Z",
+      "updatedAt": "2026-08-06T04:01:07.629Z"
     }
   ],
-  "nextId": 103
+  "nextId": 104
 };
