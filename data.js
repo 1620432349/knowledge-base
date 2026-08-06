@@ -1601,7 +1601,25 @@ window.STATIC_DATA = {
       "fileSize": 7287957,
       "createdAt": "2026-08-06T04:01:07.629Z",
       "updatedAt": "2026-08-06T04:01:07.629Z"
+    },
+    {
+      "id": 104,
+      "title": "8.24上海至新疆",
+      "category": "供应商合同",
+      "subsidiary": "遇见美好文旅科技集团有限公司",
+      "supplier": "上海铁路国际旅游(集团)有限公司",
+      "documentNumber": "",
+      "issueDate": "2026-08-24",
+      "expiryDate": "2026-09-10",
+      "description": "",
+      "tags": "",
+      "fileName": "8.24ä¸æµ·è³æ°ç.pdf",
+      "filePath": "1786010148553-361863564.pdf",
+      "fileType": ".pdf",
+      "fileSize": 7094483,
+      "createdAt": "2026-08-06T09:55:48.594Z",
+      "updatedAt": "2026-08-06T09:55:48.595Z"
     }
   ],
-  "nextId": 104
+  "nextId": 105
 };
